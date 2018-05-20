@@ -10,6 +10,17 @@
 
 @implementation CountryData
 
-
+-(id)initWithDictionary: (NSDictionary*) countryDic{
+    self = [super init];
+    if(self) {
+        self.title = countryDic[@"title"] == [NSNull null] ?  @"--N/A--" : countryDic[@"title"];
+        self.topicDescription = countryDic[@"description"] == [NSNull null] ?  @"--N/A--" : countryDic[@"description"];
+//        if(countryDic[@"imageHref"] == [NSNull null]){
+//            NSLog(@"NO DATA");
+//        }
+        self.imageURL = countryDic[@"imageHref"] == [NSNull null] ?  @"placeholder" : countryDic[@"imageHref"];
+    }
+    return self;
+}
 
 @end

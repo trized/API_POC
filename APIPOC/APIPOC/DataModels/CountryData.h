@@ -13,4 +13,5 @@
 @property (strong,nonatomic) NSString *title;
 @property (strong,nonatomic) NSString *topicDescription;
 @property (strong,nonatomic) NSString *imageURL;
+-(id)initWithDictionary: (NSDictionary*) countryDic;
 @end

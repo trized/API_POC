@@ -15,6 +15,9 @@
 		458518E820B0935700955E42 /* APIPOCTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 458518E720B0935700955E42 /* APIPOCTests.m */; };
 		458518F420B0950C00955E42 /* InfoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458518F320B0950C00955E42 /* InfoTableViewController.m */; };
 		458518F820B0B24300955E42 /* CountryData.m in Sources */ = {isa = PBXBuildFile; fileRef = 458518F720B0B24300955E42 /* CountryData.m */; };
+		458518FC20B1679500955E42 /* CustomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 458518FB20B1679500955E42 /* CustomTableViewCell.m */; };
+		4585190020B1DCBC00955E42 /* NetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 458518FF20B1DCBC00955E42 /* NetworkManager.m */; };
+		4585190620B20C9000955E42 /* APIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4585190520B20C9000955E42 /* APIManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +46,12 @@
 		458518F320B0950C00955E42 /* InfoTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InfoTableViewController.m; sourceTree = "<group>"; };
 		458518F620B0B24300955E42 /* CountryData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CountryData.h; sourceTree = "<group>"; };
 		458518F720B0B24300955E42 /* CountryData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CountryData.m; sourceTree = "<group>"; };
+		458518FA20B1679500955E42 /* CustomTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomTableViewCell.h; sourceTree = "<group>"; };
+		458518FB20B1679500955E42 /* CustomTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomTableViewCell.m; sourceTree = "<group>"; };
+		458518FE20B1DCBC00955E42 /* NetworkManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkManager.h; sourceTree = "<group>"; };
+		458518FF20B1DCBC00955E42 /* NetworkManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetworkManager.m; sourceTree = "<group>"; };
+		4585190420B20C9000955E42 /* APIManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = APIManager.h; sourceTree = "<group>"; };
+		4585190520B20C9000955E42 /* APIManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = APIManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +93,8 @@
 		458518CD20B0935500955E42 /* APIPOC */ = {
 			isa = PBXGroup;
 			children = (
+				458518FD20B1D8D500955E42 /* Network */,
+				458518F920B1675A00955E42 /* Views */,
 				458518F520B0B20C00955E42 /* DataModels */,
 				458518CE20B0935500955E42 /* AppDelegate.h */,
 				458518CF20B0935500955E42 /* AppDelegate.m */,
@@ -114,6 +125,26 @@
 				458518F720B0B24300955E42 /* CountryData.m */,
 			);
 			path = DataModels;
+			sourceTree = "<group>";
+		};
+		458518F920B1675A00955E42 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				458518FA20B1679500955E42 /* CustomTableViewCell.h */,
+				458518FB20B1679500955E42 /* CustomTableViewCell.m */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		458518FD20B1D8D500955E42 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				458518FE20B1DCBC00955E42 /* NetworkManager.h */,
+				458518FF20B1DCBC00955E42 /* NetworkManager.m */,
+				4585190420B20C9000955E42 /* APIManager.h */,
+				4585190520B20C9000955E42 /* APIManager.m */,
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -219,6 +250,9 @@
 				458518DE20B0935700955E42 /* main.m in Sources */,
 				458518D020B0935500955E42 /* AppDelegate.m in Sources */,
 				458518F820B0B24300955E42 /* CountryData.m in Sources */,
+				458518FC20B1679500955E42 /* CustomTableViewCell.m in Sources */,
+				4585190620B20C9000955E42 /* APIManager.m in Sources */,
+				4585190020B1DCBC00955E42 /* NetworkManager.m in Sources */,
 				458518F420B0950C00955E42 /* InfoTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
