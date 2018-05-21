@@ -7,13 +7,12 @@
 //
 
 #import "InfoTableViewController.h"
-#import "CountryData.h"
 #import "CustomTableViewCell.h"
 #import "APIManager.h"
 
 
 @interface InfoTableViewController ()
-    @property (strong,nonatomic) NSMutableArray<CountryData *> *content;
+//    @property (strong,nonatomic) NSMutableArray<CountryData *> *content;
 @end
 
 @implementation InfoTableViewController
@@ -35,11 +34,11 @@ static NSString *K_PLACEHOLDER_NAVBAR_TITLE = @"--Loading--";
     // Dispose of any resources that can be recreated.
 }
 
-// MARK: TableView Delegate & Datasource Methods
-
+// MARK: TableView DELEGATE & DATASOURCE Methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return _content.count;
@@ -63,7 +62,7 @@ static NSString *K_PLACEHOLDER_NAVBAR_TITLE = @"--Loading--";
     // Download the image asynchronously
     NSURL *url = [NSURL URLWithString:cellData.imageURL];
     [self downloadImageWithURL:url completionBlock:^(BOOL succeeded, UIImage *image) {
-        if (succeeded) {
+        if (succeeded && image != nil) {
             // Change the image in the cell
             cell.topicImageView.image = image;
         }
@@ -74,8 +73,9 @@ static NSString *K_PLACEHOLDER_NAVBAR_TITLE = @"--Loading--";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 {
     CountryData *cellData = [_content objectAtIndex:indexPath.row];
-    NSLog(@"title of cell %@-%d", cellData.title, indexPath.row);
+    NSLog(@"title of cell %@-%li", cellData.title, indexPath.row);
 }
+
 
 // MARK: Basic UI and Data Setup methods
 // Basic Setup helper method to be called from viewdidload
@@ -89,6 +89,13 @@ static NSString *K_PLACEHOLDER_NAVBAR_TITLE = @"--Loading--";
     // Handling for self sizing cells
     self.tableView.estimatedRowHeight = 100;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
+    
+    // Set the backgroundview to hold a simple label
+    UILabel* backgroundLabel = [UILabel.new initWithFrame:CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.tableView.frame.size.height)];
+    backgroundLabel.text = @"--FETCHING DATA--";
+    backgroundLabel.font = [UIFont fontWithName:@"Arial-Bold" size:13.0f];
+    backgroundLabel.textAlignment = NSTextAlignmentCenter;
+    self.tableView.backgroundView = backgroundLabel;
 }
 - (void) setupNavBar {
     
@@ -96,7 +103,6 @@ static NSString *K_PLACEHOLDER_NAVBAR_TITLE = @"--Loading--";
     self.navigationItem.title = K_PLACEHOLDER_NAVBAR_TITLE;
     
     // add the UIBarButton to the NavBar
-    
     UIBarButtonItem *refreshButton = [UIBarButtonItem.new initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshButtonPressed:)];
     self.navigationItem.rightBarButtonItem = refreshButton;
     self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
@@ -105,11 +111,13 @@ static NSString *K_PLACEHOLDER_NAVBAR_TITLE = @"--Loading--";
 
 // Method fetches the json data from the API call and returns a NSDictionary
 -(void) fetchCountryData {
-    [APIManager.new fetchCountryDataWithBlock:^(NSDictionary *jsonDic) {
+    [APIManager.new fetchCountryDataWithBlock:^(NSDictionary *jsonDic, NSURLResponse *response) {
+        
         // fetch the title which needs to be displayed on the navbar
         if(jsonDic[@"title"]){
             self.navigationItem.title = jsonDic[@"title"];
         }
+        
         // fetch the row data which is used to create the NSDictionary (_content) of CountryData
         if(jsonDic[@"rows"]){
             self.content = NSMutableArray.new;
@@ -123,7 +131,6 @@ static NSString *K_PLACEHOLDER_NAVBAR_TITLE = @"--Loading--";
 
 // MARK: Method to handle refresh button press
 -(void) refreshButtonPressed: (UIButton*) sender {
-//    NSLog(@"Refresh Button pressed");
     
     // fetch the latest data from th API
     [self fetchCountryData];

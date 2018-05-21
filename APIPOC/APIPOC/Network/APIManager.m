@@ -27,7 +27,7 @@ static NSString *K_API_URL = @"https://dl.dropboxusercontent.com/s/2iodh4vg0eort
                 NSLog(@"FAILED TO PROCESS JSON");
                 return;
             }
-            jsonDictionary(jsonDic);            
+            jsonDictionary(jsonDic, response);
         }else if ([data length] == 0 && error == nil){
             NSLog(@"NO DATA TO PROCESS");
         }else if (error != nil) {

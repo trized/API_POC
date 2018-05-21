@@ -7,6 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CountryData.h"
 
 @interface InfoTableViewController : UITableViewController
+    @property (strong,nonatomic) NSMutableArray<CountryData *> *content;
+
+- (void)downloadImageWithURL:(NSURL *)url completionBlock:(void (^)(BOOL succeeded, UIImage *image))completionBlock;
+
 @end

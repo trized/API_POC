@@ -10,7 +10,7 @@
 
 @interface APIManager : NSObject
 
-typedef void (^ completionBlockWithDictionary)(NSDictionary*);
+typedef void (^ completionBlockWithDictionary)(NSDictionary*, NSURLResponse*);
 
 -(void) fetchCountryDataWithBlock: (completionBlockWithDictionary)jsonDictionary;
 
