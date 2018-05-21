@@ -9,10 +9,12 @@
 #import "APIManager.h"
 #import "NetworkManager.h"
 
+static NSString *K_API_URL = @"https://dl.dropboxusercontent.com/s/2iodh4vg0eortkl/facts.json";
+
 @implementation APIManager
 
 -(void) fetchCountryDataWithBlock: (completionBlockWithDictionary)jsonDictionary{
-    [NetworkManager handleRequestWithBlock:@"https://dl.dropboxusercontent.com/s/2iodh4vg0eortkl/facts.json" completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+    [NetworkManager handleRequestWithBlock:K_API_URL completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         
         if ([data length] > 0 && error == nil){
             // do your work here

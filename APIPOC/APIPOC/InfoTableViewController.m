@@ -19,6 +19,7 @@
 @implementation InfoTableViewController
 
 static NSString *cellID = @"Cell";
+static NSString *K_PLACEHOLDER_NAVBAR_TITLE = @"--Loading--";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -26,7 +27,6 @@ static NSString *cellID = @"Cell";
     
     [self setupNavBar];
     [self fetchCountryData];
-    
     [self setupData];
 }
 
@@ -35,7 +35,7 @@ static NSString *cellID = @"Cell";
     // Dispose of any resources that can be recreated.
 }
 
-// MARK: TableView Delegate Methods
+// MARK: TableView Delegate & Datasource Methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -55,14 +55,16 @@ static NSString *cellID = @"Cell";
     CountryData *cellData = [_content objectAtIndex:indexPath.row];
     cell.title.text = cellData.title;
     cell.topicDescription.text = cellData.topicDescription;
+    
+    // Load default/placeholder image until the API retreives and updates the data
     UIImage* tempImage = [UIImage imageNamed:@"placeholder"];
     cell.topicImageView.image = tempImage;
     
-    // download the image asynchronously
+    // Download the image asynchronously
     NSURL *url = [NSURL URLWithString:cellData.imageURL];
     [self downloadImageWithURL:url completionBlock:^(BOOL succeeded, UIImage *image) {
         if (succeeded) {
-            // change the image in the cell
+            // Change the image in the cell
             cell.topicImageView.image = image;
         }
     }];
@@ -75,36 +77,40 @@ static NSString *cellID = @"Cell";
     NSLog(@"title of cell %@-%d", cellData.title, indexPath.row);
 }
 
-// MARK: Basic Setup
+// MARK: Basic UI and Data Setup methods
 // Basic Setup helper method to be called from viewdidload
 - (void) setupData{
+    //Initalizing the content dictionary
     self.content = NSMutableArray.new;
+    
+    // register the custom UITableViewCell
     [self.tableView registerClass:CustomTableViewCell.class forCellReuseIdentifier:cellID];
     
+    // Handling for self sizing cells
     self.tableView.estimatedRowHeight = 100;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
 }
 - (void) setupNavBar {
     
-    self.navigationItem.title = @"--Loading--";
-    UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc]
-                                   initWithTitle:@"Refresh"
-                                   style:UIBarButtonItemStylePlain
-                                   target:self
-                                      action:@selector(refreshButtonPressed:)];
+    // Setup default values to show before the API is complete
+    self.navigationItem.title = K_PLACEHOLDER_NAVBAR_TITLE;
+    
+    // add the UIBarButton to the NavBar
+    
+    UIBarButtonItem *refreshButton = [UIBarButtonItem.new initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshButtonPressed:)];
     self.navigationItem.rightBarButtonItem = refreshButton;
+    self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
 }
 
--(void) refreshButtonPressed: (UIButton*) sender {
-    NSLog(@"Refresh Button pressed");
-    [self fetchCountryData];
-}
 
+// Method fetches the json data from the API call and returns a NSDictionary
 -(void) fetchCountryData {
     [APIManager.new fetchCountryDataWithBlock:^(NSDictionary *jsonDic) {
+        // fetch the title which needs to be displayed on the navbar
         if(jsonDic[@"title"]){
             self.navigationItem.title = jsonDic[@"title"];
         }
+        // fetch the row data which is used to create the NSDictionary (_content) of CountryData
         if(jsonDic[@"rows"]){
             self.content = NSMutableArray.new;
             for (NSDictionary *itemData in jsonDic[@"rows"]){
@@ -115,6 +121,20 @@ static NSString *cellID = @"Cell";
     }];
 }
 
+// MARK: Method to handle refresh button press
+-(void) refreshButtonPressed: (UIButton*) sender {
+//    NSLog(@"Refresh Button pressed");
+    
+    // fetch the latest data from th API
+    [self fetchCountryData];
+}
+
+// MARK: Method to fetch image ascyhronously
+/**
+ - Parameters:
+    -url: (NSURL *)url - urlrequest (url) of the image to load
+    -completionBlock: The completion block which gets the loaded UIImage object from the asynchronous call
+ */
 - (void)downloadImageWithURL:(NSURL *)url completionBlock:(void (^)(BOOL succeeded, UIImage *image))completionBlock
 {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -131,39 +151,22 @@ static NSString *cellID = @"Cell";
                            }];
 }
 
+
+// MARK: Delegate Method to handle orientation changes
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-    
     // Code here will execute before the rotation begins.
     // Equivalent to placing it in the deprecated method -[willRotateToInterfaceOrientation:duration:]
     
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
-        
         // Place code here to perform animations during the rotation.
         // You can pass nil or leave this block empty if not necessary.
         [self.tableView reloadData];
         
     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context) {
-        
         // Code here will execute after the rotation has finished.
         // Equivalent to placing it in the deprecated method -[didRotateFromInterfaceOrientation:]
-        
-//        NSArray *cells = [self.tableView visibleCells];
-//        [self.tableView beginUpdates];
-//        for (CustomTableViewCell *cell in cells) {
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                [cell.contentView sizeToFit];
-//                [cell layoutSubviews];
-//                [cell.contentView layoutIfNeeded];
-//                [cell.contentView setNeedsDisplay];
-//                [cell.contentView setNeedsLayout];
-//            });
-//            
-//        }
-//        [self.tableView endUpdates];
-        
-//        [self.tableView reloadData];
     }];
 }
 
